@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A-MEM · Scientific Poster · Roy · Syracuse 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #050f08;
+  --surface: rgba(255,255,255,.055);
+  --surface-2: rgba(255,255,255,.09);
+  --border: rgba(255,255,255,.11);
+  --border-hover: rgba(255,255,255,.26);
+  --text: #e8f2ea;
+  --muted: #7a9e80;
+  --green: #6ee87a;
+  --green-dim: rgba(110,232,122,.14);
+  --gold: #f0c060;
+  --gold-dim: rgba(240,192,96,.13);
+  --red: #f07070;
+  --red-dim: rgba(240,112,112,.13);
+  --teal: #5adce8;
+  --teal-dim: rgba(90,220,232,.12);
+  --violet: #b89cf0;
+  --violet-dim: rgba(184,156,240,.12);
+  --ff-display: 'DM Serif Display', serif;
+  --ff-body: 'DM Sans', sans-serif;
+  --ff-mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-body);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.page-wrap {
+  position: relative; z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 22px 40px;
+  overflow-x: hidden;
+}
+
+/* Ambient BG */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(110,232,122,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 30% at 90% 20%, rgba(240,192,96,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 50% 100%, rgba(90,220,232,.08) 0%, transparent 60%);
+}
+
+/* Dot grid */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255,255,255,.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+
+.page-wrap {
+  position: relative; z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px 22px 40px;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 28px;
+  align-items: end;
+  padding: 32px 36px 28px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  backdrop-filter: blur(30px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; left: -40px; width: 360px; height: 260px;
+  background: radial-gradient(circle, rgba(110,232,122,.2), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-chip {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(110,232,122,.25);
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(36px,5.5vw,72px);
+  line-height: .94;
+  color: #fff;
+  letter-spacing: -.03em;
+  margin-bottom: 14px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,.68);
+  font-weight: 300;
+  max-width: 760px;
+  line-height: 1.65;
+}
+
+.hero-meta {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 2;
+  text-align: right;
+}
+
+.hero-meta a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(110,232,122,.3); }
+.hero-meta a:hover { color: #9affa4; }
+
+/* ── STAT STRIP ─────────────────────────────────────────────── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  padding: 16px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  text-align: center;
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+.stat-card.g { border-top: 2.5px solid var(--green); }
+.stat-card.r { border-top: 2.5px solid var(--red); }
+.stat-card.o { border-top: 2.5px solid var(--gold); }
+.stat-card.t { border-top: 2.5px solid var(--teal); }
+
+.stat-val {
+  font-family: var(--ff-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.g .stat-val { color: var(--green); }
+.r .stat-val { color: var(--red); }
+.o .stat-val { color: var(--gold); }
+.t .stat-val { color: var(--teal); }
+
+.stat-label { font-size: 11.5px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.stat-sub { font-family: var(--ff-mono); font-size: 9.5px; color: var(--muted); }
+
+/* ── GRID LAYOUT ─────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Column spans — min-width:0 is the key fix that stops grid items from overflowing */
+.col-3  { grid-column: span 3;  min-width: 0; }
+.col-4  { grid-column: span 4;  min-width: 0; }
+.col-5  { grid-column: span 5;  min-width: 0; }
+.col-6  { grid-column: span 6;  min-width: 0; }
+.col-7  { grid-column: span 7;  min-width: 0; }
+.col-8  { grid-column: span 8;  min-width: 0; }
+.col-9  { grid-column: span 9;  min-width: 0; }
+.col-12 { grid-column: span 12; min-width: 0; }
+
+/* ── CARD ─────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 18px 20px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  align-self: start;
+  transition: transform .3s cubic-bezier(.2,.9,.2,1), border-color .3s, box-shadow .3s, background .3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* prevents card from blowing past its grid column */
+  min-width: 0;
+  max-width: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.004);
+  border-color: var(--border-hover);
+  background: var(--surface-2);
+  box-shadow: 0 28px 80px rgba(0,0,0,.3);
+}
+
+.card.no-lift { cursor: default; }
+.card.no-lift:hover { transform: none; border-color: var(--border-hover); background: var(--surface-2); box-shadow: 0 20px 60px rgba(0,0,0,.24); }
+
+/* Expand button on no-lift cards */
+.expand-btn {
+  position: absolute;
+  top: 14px; right: 14px;
+  display: flex; align-items: center; gap: 4px;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.45);
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s, transform .15s;
+  z-index: 2;
+}
+.expand-btn:hover {
+  background: rgba(110,232,122,.15);
+  border-color: rgba(110,232,122,.35);
+  color: var(--green);
+  transform: scale(1.06);
+}
+
+/* Expand hint */
+.card:not(.no-lift)::after {
+  content: '↗ expand';
+  position: absolute;
+  top: 14px; right: 16px;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .08em;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.card:not(.no-lift):hover::after { opacity: 1; }
+
+/* Section label */
+.slabel {
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--green);
+  border-bottom: 1px solid rgba(110,232,122,.3);
+  padding-bottom: 7px;
+  margin-bottom: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.snr {
+  background: var(--green-dim);
+  color: #c0ffc0;
+  font-size: 8.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(110,232,122,.2);
+}
+
+/* ── ABSTRACT ───────────────────────────────────────────────── */
+.abstract {
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: rgba(232,242,234,.85);
+  border-left: 3px solid var(--gold);
+  padding-left: 14px;
+  font-style: italic;
+}
+
+/* ── MOT LIST ───────────────────────────────────────────────── */
+.motlist { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.motlist li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12.5px; color: rgba(232,242,234,.88); line-height: 1.55;
+  padding: 7px 10px;
+  background: rgba(255,255,255,.04);
+  border-radius: 10px;
+  border-left: 2px solid rgba(110,232,122,.3);
+  transition: background .2s;
+}
+.motlist li:hover { background: rgba(255,255,255,.08); }
+.arr { color: var(--green); font-family: var(--ff-mono); font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── PIPELINE ───────────────────────────────────────────────── */
+.pipeline-steps {
+  display: flex;
+  gap: 0;
+  margin-top: 6px;
+  overflow-x: auto;
+}
+
+.pstep {
+  flex: 1;
+  min-width: 100px;
+  background: rgba(255,255,255,.05);
+  border: .5px solid var(--border);
+  padding: 10px 8px;
+  text-align: center;
+  transition: background .2s;
+}
+.pstep:first-child { border-radius: 12px 0 0 12px; }
+.pstep:last-child { border-radius: 0 12px 12px 0; }
+.pstep:hover { background: rgba(255,255,255,.1); }
+.pstep.highlight { background: var(--green-dim); border-color: rgba(110,232,122,.3); }
+
+.pstep-n {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  color: var(--green);
+  display: block; line-height: 1; margin-bottom: 3px;
+}
+.pstep-t { font-weight: 600; font-size: 11px; color: #fff; margin-bottom: 3px; }
+.pstep-d { font-size: 10px; color: var(--muted); line-height: 1.4; }
+.parrow { color: rgba(255,255,255,.2); font-size: 18px; display: flex; align-items: center; padding: 0 2px; flex-shrink: 0; }
+
+/* ── LIFECYCLE ──────────────────────────────────────────────── */
+.lifecycle { display: flex; flex-direction: column; gap: 6px; }
+.lc-step {
+  background: rgba(255,255,255,.05);
+  border-left: 3px solid;
+  border-radius: 10px;
+  padding: 8px 11px;
+  transition: background .2s;
+}
+.lc-step:hover { background: rgba(255,255,255,.09); }
+.lc-step.s1 { border-color: var(--green); }
+.lc-step.s2 { border-color: var(--gold); }
+.lc-step.s3 { border-color: var(--teal); }
+.lc-step.s4 { border-color: var(--violet); }
+.lc-title { font-weight: 600; font-size: 11.5px; color: #fff; margin-bottom: 2px; }
+.lc-desc { font-size: 10.5px; color: var(--muted); line-height: 1.45; }
+.lc-arrow { text-align: center; font-size: 11px; color: rgba(255,255,255,.2); padding: 1px 0; }
+
+/* ── TABLE ──────────────────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th {
+  font-family: var(--ff-mono);
+  font-size: 8.5px; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+.data-table th:first-child { text-align: left; }
+.data-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  text-align: right;
+  color: rgba(232,242,234,.9);
+}
+.data-table td:first-child { text-align: left; font-weight: 500; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,.04); }
+.td-best { color: var(--green) !important; font-weight: 700; }
+.td-worst { color: var(--red) !important; }
+.td-row td { background: var(--green-dim); }
+
+.grp-row td {
+  background: rgba(110,232,122,.1);
+  color: rgba(255,255,255,.9);
+  font-family: var(--ff-mono);
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+
+/* ── BADGES ─────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+}
+.bg-green { background: var(--green-dim); color: #c0ffc4; border: 1px solid rgba(110,232,122,.2); }
+.bg-gold { background: var(--gold-dim); color: #ffe4a0; border: 1px solid rgba(240,192,96,.2); }
+
+/* ── FINDINGS ────────────────────────────────────────────────── */
+.findings { display: flex; flex-direction: column; gap: 8px; }
+.finding {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 11px 13px;
+  border-left: 3px solid;
+  border-radius: 12px;
+  transition: background .2s;
+}
+.finding:hover { filter: brightness(1.1); }
+.f-red { border-color: var(--red); background: var(--red-dim); }
+.f-green { border-color: var(--green); background: var(--green-dim); }
+.f-gold { border-color: var(--gold); background: var(--gold-dim); }
+.f-teal { border-color: var(--teal); background: var(--teal-dim); }
+.fnum { font-family: var(--ff-display); font-size: 22px; color: #fff; line-height: 1; flex-shrink: 0; margin-top: -1px; }
+.fbody { font-size: 12px; line-height: 1.6; color: rgba(232,242,234,.9); }
+
+/* ── LIMITATIONS ─────────────────────────────────────────────── */
+.lim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.lim-item {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 9px 11px;
+  background: rgba(255,255,255,.05);
+  border-left: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 12px;
+  color: rgba(232,242,234,.85);
+  line-height: 1.5;
+  transition: background .2s;
+}
+.lim-item:hover { background: rgba(255,255,255,.09); }
+.lim-icon { color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+/* ── FUTURE WORK ──────────────────────────────────────────────── */
+.fw-list { display: flex; flex-direction: column; gap: 7px; }
+.fw-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 9px 11px;
+  background: rgba(255,255,255,.05);
+  border-radius: 11px;
+  font-size: 12px;
+  color: rgba(232,242,234,.88);
+  line-height: 1.55;
+  transition: background .2s;
+}
+.fw-item:hover { background: rgba(255,255,255,.1); }
+.fw-tag {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+.tag-hi { background: var(--red); color: #fff; }
+.tag-med { background: #2a7a2a; color: #c0ffc0; }
+.tag-lng { background: #006a7a; color: #b0f0f8; }
+.tag-inf { background: var(--gold); color: #3a2800; }
+
+/* ── COST BOX ───────────────────────────────────────────────── */
+.cost-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.cost-item {
+  background: rgba(255,255,255,.07);
+  padding: 10px 8px;
+  text-align: center;
+  border-radius: 13px;
+  transition: background .2s;
+}
+.cost-item:hover { background: rgba(255,255,255,.12); }
+.cost-cond { font-family: var(--ff-mono); font-size: 9px; color: var(--muted); margin-bottom: 4px; }
+.cost-calls { font-family: var(--ff-display); font-size: 28px; color: var(--green); line-height: 1; }
+.cost-sub { font-size: 9px; color: var(--muted); margin-top: 2px; }
+.cost-price { font-size: 11.5px; font-weight: 600; margin-top: 5px; }
+.cp-g { color: #90f090; } .cp-r { color: #f09090; }
+
+/* ── HEATMAP ───────────────────────────────────────────────── */
+.heatmap { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.heatmap th {
+  font-family: var(--ff-mono);
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.heatmap th:first-child { text-align: left; padding-left: 10px; }
+.heatmap td { padding: 7px 6px; text-align: center; font-weight: 600; transition: filter .2s; }
+.heatmap td:first-child {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-align: left;
+  padding-left: 10px;
+  color: var(--text);
+  background: rgba(255,255,255,.03) !important;
+}
+.heatmap tr:hover td { filter: brightness(1.15); }
+
+/* ── CHART WRAPPERS ──────────────────────────────────────────── */
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap canvas { width: 100% !important; }
+
+/* ── CONCLUSIONS ─────────────────────────────────────────────── */
+.conc-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.conc-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12.5px; color: rgba(232,242,234,.9); line-height: 1.55;
+  padding: 9px 12px;
+  background: rgba(255,255,255,.04);
+  border-radius: 11px;
+  border-left: 2px solid rgba(110,232,122,.4);
+  transition: background .2s;
+}
+.conc-list li:hover { background: rgba(255,255,255,.08); }
+.star { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── PAPER RESULT TABLE ──────────────────────────────────────── */
+.ptable-note {
+  font-size: 11px; color: var(--muted); line-height: 1.6;
+  border-left: 2px solid var(--gold);
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────────── */
+.footer {
+  margin-top: 20px;
+  padding: 16px 4px 8px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.footer a { color: var(--green); text-decoration: none; }
+.footer a:hover { color: #9affa4; }
+
+/* ── MODAL ───────────────────────────────────────────────────── */
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(3,10,6,.82);
+  backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
+
+.modal {
+  position: fixed; z-index: 101;
+  top: 50%; left: 50%;
+  width: min(1100px, calc(100% - 32px));
+  max-height: min(880px, calc(100vh - 40px));
+  overflow-y: auto;
+  background: linear-gradient(145deg, rgba(8,22,13,.98), rgba(14,32,22,.98));
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 26px;
+  box-shadow: 0 50px 160px rgba(0,0,0,.7);
+  padding: 28px;
+  transform: translate(-50%, -47%) scale(.94);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .28s ease, transform .4s cubic-bezier(.2,.9,.2,1);
+}
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-tag {
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.modal-close {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: var(--surface-2); transform: rotate(90deg); }
+
+#modalBody {
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+/* larger text inside modal */
+#modalBody .abstract { font-size: 13.5px; }
+#modalBody .motlist li { font-size: 13px; }
+#modalBody .fbody { font-size: 13px; }
+#modalBody .data-table { font-size: 13px; }
+#modalBody .data-table th { font-size: 9.5px; }
+#modalBody .lc-desc { font-size: 11.5px; }
+#modalBody .lim-item { font-size: 13px; }
+#modalBody .fw-item { font-size: 13px; }
+#modalBody .conc-list li { font-size: 13.5px; }
+
+/* ── SCROLL BAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.25); }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+
+/* Tables that can't shrink below ~400px get horizontal scroll */
+.data-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.data-table { min-width: 420px; }
+
+@media (max-width: 1200px) {
+  /* start collapsing the wider asymmetric pairs */
+  .col-7 { grid-column: span 12; }
+  .col-5 { grid-column: span 12; }
+}
+
+@media (max-width: 1100px) {
+  .col-3 { grid-column: span 6; }
+  .col-4 { grid-column: span 6; }
+  .col-6 { grid-column: span 12; }
+  .col-8 { grid-column: span 12; }
+  .col-9 { grid-column: span 12; }
+  .pipeline-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .parrow { display: none; }
+  .pstep { border-radius: 10px !important; }
+}
+
+@media (max-width: 800px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-meta { text-align: left; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { grid-column: span 12; }
+  .lim-grid { grid-template-columns: 1fr; }
+  .cost-grid { grid-template-columns: 1fr 1fr; }
+  h1 { font-size: 36px; }
+  .footer { flex-direction: column; }
+  .pipeline-steps { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 10px; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .cost-grid { grid-template-columns: 1fr 1fr; }
+  .pipeline-steps { grid-template-columns: 1fr; }
+  .lim-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 30px; }
+  .hero { padding: 20px; }
+}
+
+/* animate on load */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero { animation: fadeUp .6s ease both; }
+.stat-strip { animation: fadeUp .6s .1s ease both; }
+.grid { animation: fadeUp .6s .2s ease both; }
+
+/* ── RESEARCH FLOW CONNECTOR ─────────────────────────────────── */
+.flow-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 16px 0 18px;
+  padding: 0 4px;
+  animation: fadeUp .6s .15s ease both;
+  position: relative;
+}
+
+.flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.flow-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  border: 1.5px solid;
+  position: relative;
+  transition: transform .25s, box-shadow .25s;
+  cursor: default;
+}
+
+.flow-dot:hover {
+  transform: scale(1.15);
+}
+
+.flow-dot.fd-green {
+  background: var(--green-dim);
+  border-color: rgba(110,232,122,.5);
+  color: var(--green);
+  box-shadow: 0 0 18px rgba(110,232,122,.2);
+}
+.flow-dot.fd-gold {
+  background: var(--gold-dim);
+  border-color: rgba(240,192,96,.5);
+  color: var(--gold);
+  box-shadow: 0 0 18px rgba(240,192,96,.18);
+}
+.flow-dot.fd-teal {
+  background: var(--teal-dim);
+  border-color: rgba(90,220,232,.5);
+  color: var(--teal);
+  box-shadow: 0 0 18px rgba(90,220,232,.18);
+}
+.flow-dot.fd-red {
+  background: var(--red-dim);
+  border-color: rgba(240,112,112,.5);
+  color: var(--red);
+  box-shadow: 0 0 18px rgba(240,112,112,.18);
+}
+.flow-dot.fd-violet {
+  background: var(--violet-dim);
+  border-color: rgba(184,156,240,.5);
+  color: var(--violet);
+  box-shadow: 0 0 18px rgba(184,156,240,.18);
+}
+
+.flow-label {
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  max-width: 72px;
+  line-height: 1.35;
+}
+
+.flow-line {
+  flex: 1;
+  height: 1.5px;
+  position: relative;
+  margin-bottom: 20px; /* aligns with dot center */
+  overflow: visible;
+}
+
+.flow-line-inner {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(110,232,122,.4), transparent);
+  animation: flowPulse 3s ease-in-out infinite;
+}
+
+.flow-line-inner.gl { background: linear-gradient(90deg, rgba(110,232,122,.3), rgba(240,192,96,.3)); }
+.flow-line-inner.go { background: linear-gradient(90deg, rgba(240,192,96,.3), rgba(90,220,232,.3)); }
+.flow-line-inner.ot { background: linear-gradient(90deg, rgba(90,220,232,.3), rgba(240,112,112,.3)); }
+.flow-line-inner.tr { background: linear-gradient(90deg, rgba(240,112,112,.3), rgba(184,156,240,.3)); }
+
+@keyframes flowPulse {
+  0%, 100% { opacity: .5; }
+  50% { opacity: 1; }
+}
+
+/* Moving particle on each line */
+.flow-line::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: .9;
+  animation: particle 4s linear infinite;
+  box-shadow: 0 0 8px var(--green);
+}
+
+@keyframes particle {
+  0%   { left: 0%;   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.flow-line:nth-child(4)::after  { animation-delay: .8s;  background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.flow-line:nth-child(6)::after  { animation-delay: 1.6s; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+.flow-line:nth-child(8)::after  { animation-delay: 2.4s; background: var(--red); box-shadow: 0 0 8px var(--red); }
+
+/* ── STAT → GRID BRIDGE ──────────────────────────────────────── */
+.stat-grid-bridge {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  height: 28px;
+  margin: -6px 0 8px;
+  padding: 0 10%;
+  animation: fadeUp .6s .12s ease both;
+  pointer-events: none;
+}
+
+.bridge-line {
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(110,232,122,.35), transparent);
+  position: relative;
+}
+.bridge-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(110,232,122,.5);
+  box-shadow: 0 0 8px rgba(110,232,122,.4);
+}
+.bridge-line:nth-child(2) { background: linear-gradient(to bottom, rgba(240,112,112,.35), transparent); }
+.bridge-line:nth-child(2)::after { background: rgba(240,112,112,.5); box-shadow: 0 0 8px rgba(240,112,112,.4); }
+.bridge-line:nth-child(3) { background: linear-gradient(to bottom, rgba(240,192,96,.35), transparent); }
+.bridge-line:nth-child(3)::after { background: rgba(240,192,96,.5); box-shadow: 0 0 8px rgba(240,192,96,.4); }
+.bridge-line:nth-child(4) { background: linear-gradient(to bottom, rgba(90,220,232,.35), transparent); }
+.bridge-line:nth-child(4)::after { background: rgba(90,220,232,.5); box-shadow: 0 0 8px rgba(90,220,232,.4); }
+
+@media (max-width: 800px) {
+  .flow-connector { overflow-x: auto; padding-bottom: 4px; }
+  .flow-label { font-size: 7px; max-width: 56px; }
+  .flow-dot { width: 30px; height: 30px; font-size: 8.5px; }
+  .stat-grid-bridge { display: none; }
+}
+
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<header class="hero">
+  <div>
+    <div class="hero-chip">IST 700 · Final Project · Roy · Syracuse University · April 2026</div>
+    <h1><em>A-MEM</em>: Agentic Memory<br>for LLM Agents</h1>
+    <p class="hero-sub">A controlled replication of Xu et al. (2024) with novel component-level ablations, a no-memory upper bound baseline, and retrieve-<em>k</em> sensitivity analysis on the LoCoMo long-context QA benchmark.</p>
+  </div>
+  <div class="hero-meta">
+    Models: GPT-4o-mini · GPT-3.5-turbo<br>
+    Dataset: LoCoMo (locomo1 / locomo2)<br>
+    199–304 questions per condition<br>
+    6 experimental conditions<br><br>
+    <a href="https://arxiv.org/abs/2502.12110" target="_blank">A-MEM Paper ↗</a><br>
+    <a href="https://github.com/snap-research/locomo" target="_blank">LoCoMo Dataset ↗</a><br>
+    <a href="https://colab.research.google.com/drive/1owCJBgt1MIjte5zl38SA3yOh2Iv_y20D" target="_blank">Colab Notebook ↗</a>
+  </div>
+</header>
+
+<!-- ─── STAT STRIP ────────────────────────────────────────────── -->
+<div class="stat-strip">
+  <div class="stat-card g">
+    <div class="stat-val">0.502</div>
+    <div class="stat-label">No Memory F1</div>
+    <div class="stat-sub">GPT-4o-mini · best overall</div>
+  </div>
+  <div class="stat-card r">
+    <div class="stat-val">0.367</div>
+    <div class="stat-label">A-MEM Full F1</div>
+    <div class="stat-sub">GPT-4o-mini · worst overall</div>
+  </div>
+  <div class="stat-card o">
+    <div class="stat-val">+0.049</div>
+    <div class="stat-label">k=20 vs k=10 gain</div>
+    <div class="stat-sub">0.415 vs 0.366 · controlled</div>
+  </div>
+  <div class="stat-card t">
+    <div class="stat-val">0.847</div>
+    <div class="stat-label">Yes/No F1 ceiling</div>
+    <div class="stat-sub">GPT-4o-mini · no memory</div>
+  </div>
+</div>
+
+<!-- ─── STAT → GRID BRIDGE ──────────────────────────────────────── -->
+<div class="stat-grid-bridge">
+  <div class="bridge-line"></div>
+  <div class="bridge-line"></div>
+  <div class="bridge-line"></div>
+  <div class="bridge-line"></div>
+</div>
+
+<!-- ─── RESEARCH FLOW CONNECTOR ────────────────────────────────── -->
+<div class="flow-connector">
+  <div class="flow-node">
+    <div class="flow-dot fd-green">01</div>
+    <div class="flow-label">Abstract &amp; Context</div>
+  </div>
+  <div class="flow-line"><div class="flow-line-inner gl"></div></div>
+  <div class="flow-node">
+    <div class="flow-dot fd-gold">02</div>
+    <div class="flow-label">Background &amp; System</div>
+  </div>
+  <div class="flow-line"><div class="flow-line-inner go"></div></div>
+  <div class="flow-node">
+    <div class="flow-dot fd-teal">03</div>
+    <div class="flow-label">Experiment Design</div>
+  </div>
+  <div class="flow-line"><div class="flow-line-inner ot"></div></div>
+  <div class="flow-node">
+    <div class="flow-dot fd-red">04</div>
+    <div class="flow-label">Results &amp; Analysis</div>
+  </div>
+  <div class="flow-line"><div class="flow-line-inner tr"></div></div>
+  <div class="flow-node">
+    <div class="flow-dot fd-violet">05</div>
+    <div class="flow-label">Conclusions &amp; Future</div>
+  </div>
+</div>
+
+<!-- ─── MAIN GRID ─────────────────────────────────────────────── -->
+<div class="grid">
+
+  <!-- ABSTRACT -->
+  <div class="card col-12" data-section="01 — Abstract">
+    <div class="slabel"><span class="snr">01</span> Abstract</div>
+    <p class="abstract">This study replicates <strong>A-MEM (Xu et al., 2024)</strong>, an agentic memory system for LLM agents inspired by the Zettelkasten method, and extends its ablation with four novel conditions: a no-memory baseline, isolated linking removal, isolated evolution removal, and a retrieve-k sweep (k=10, k=20). Evaluated on the LoCoMo long-context conversational QA benchmark, I find that (1) a no-memory GPT-4o-mini baseline <strong>outperforms all GPT-3.5-turbo memory conditions</strong> on aggregate F1 (0.502 vs. 0.366–0.415), revealing a critical model-quality confound in the original paper; (2) within a controlled GPT-3.5-turbo group, linking and evolution show modest isolated contributions; and (3) A-MEM's gains are not model-agnostic — they scale with the quality of the underlying LLM performing the memory operations. These findings suggest that future memory system evaluations must include a same-model no-memory baseline to isolate architectural gains from model-capability effects.</p>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div class="card col-4" data-section="02 — Background & Motivation">
+    <div class="slabel"><span class="snr">02</span> Background &amp; Motivation</div>
+    <ul class="motlist">
+      <li><span class="arr">→</span><span>LLM agents have <strong>no persistent memory</strong> across sessions — they forget everything between conversations.</span></li>
+      <li><span class="arr">→</span><span>Existing systems (MemGPT, MemoryBank) rely on <strong>fixed, predefined structures</strong> — manually specifying when, what, and how to store memories.</span></li>
+      <li><span class="arr">→</span><span>Graph databases (Mem0) add structure but are rigid — unable to adapt to novel relationship types that emerge organically.</span></li>
+      <li><span class="arr">→</span><span><strong>Gap:</strong> No prior system organizes memory autonomously as it learns, without hardcoded rules.</span></li>
+      <li><span class="arr">→</span><span>A-MEM proposes agentic memory: constructs, links, and evolves itself via LLM calls, inspired by <strong>Zettelkasten</strong>.</span></li>
+      <li><span class="arr">→</span><span><strong>This study asks:</strong> which components actually drive performance — and does the architecture hold across model tiers?</span></li>
+    </ul>
+  </div>
+
+  <!-- LIFECYCLE -->
+  <div class="card col-4" data-section="03 — Memory Note Lifecycle">
+    <div class="slabel"><span class="snr">03</span> Memory Note Lifecycle</div>
+    <div class="lifecycle">
+      <div class="lc-step s1">
+        <div class="lc-title">① Store</div>
+        <div class="lc-desc">Turn → keywords + context + tags generated by LLM. Embedded as 384-dim vector → ChromaDB.</div>
+      </div>
+      <div class="lc-arrow">↓</div>
+      <div class="lc-step s2">
+        <div class="lc-title">② Link</div>
+        <div class="lc-desc">Top-k cosine neighbors retrieved. LLM decides which to link → builds knowledge graph for multi-hop retrieval.</div>
+      </div>
+      <div class="lc-arrow">↓</div>
+      <div class="lc-step s3">
+        <div class="lc-title">③ Evolve</div>
+        <div class="lc-desc">Linked neighbors rewrite their context + tags given new memory. Store refines itself continuously.</div>
+      </div>
+      <div class="lc-arrow">↓</div>
+      <div class="lc-step s4">
+        <div class="lc-title">④ Retrieve &amp; Answer</div>
+        <div class="lc-desc">Query embedded → top-k + linked neighbors injected into prompt → LLM answers with ~1,200 token context.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;line-height:1.5;">Inspired by <strong>Zettelkasten</strong> — atomic, interconnected notes. No predefined rules; the LLM decides what to link and how to update.</div>
+  </div>
+
+  <!-- PAPER RESULTS -->
+  <div class="card col-4" data-section="05 — Paper's Reported Results (GPT-4o-mini)">
+    <div class="slabel"><span class="snr">05</span> Paper's Reported Results</div>
+    <div class="data-table-wrap">
+    <table class="data-table" style="margin-bottom:10px;">
+      <thead>
+        <tr><th>Condition</th><th>Multi-hop F1</th><th>Temporal F1</th><th>Adversarial F1</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>w/o Linking &amp; Evolution</td><td class="td-worst">9.65</td><td>24.55</td><td class="td-worst">15.32</td></tr>
+        <tr><td>w/o Evolution only</td><td>21.35</td><td>31.24</td><td>44.16</td></tr>
+        <tr class="td-row"><td>Full A-MEM ★</td><td class="td-best">27.02</td><td class="td-best">45.85</td><td class="td-best">50.03</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="ptable-note">Linking is the bigger contributor — removing it costs ~17 multi-hop F1 points. A-MEM ranks #1 across all six models tested.<br><span style="color:var(--red);">Critical omission:</span> paper includes no same-model no-memory baseline.</div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="card col-8" data-section="04 — A-MEM Architecture (Write & Read Pipeline)">
+    <div class="slabel"><span class="snr">04</span> A-MEM Architecture — Write &amp; Read Pipeline</div>
+    <div class="pipeline-steps">
+      <div class="pstep"><span class="pstep-n">1</span><div class="pstep-t">Turn arrives</div><div class="pstep-d">Raw conversation turn captured as content field.</div></div>
+      <div class="parrow">›</div>
+      <div class="pstep"><span class="pstep-n">2</span><div class="pstep-t">Note Construction</div><div class="pstep-d">LLM generates keywords, tags, context. <em>LLM call #1.</em></div></div>
+      <div class="parrow">›</div>
+      <div class="pstep"><span class="pstep-n">3</span><div class="pstep-t">Embed → ChromaDB</div><div class="pstep-d">all-MiniLM-L6-v2 → 384-dim vector. No training.</div></div>
+      <div class="parrow">›</div>
+      <div class="pstep"><span class="pstep-n">4</span><div class="pstep-t">Link Generation</div><div class="pstep-d">Top-k cosine neighbors. LLM decides links. <em>LLM call #2.</em></div></div>
+      <div class="parrow">›</div>
+      <div class="pstep"><span class="pstep-n">5</span><div class="pstep-t">Memory Evolution</div><div class="pstep-d">Linked neighbors update context + tags. <em>LLM call #3.</em></div></div>
+      <div class="parrow">›</div>
+      <div class="pstep highlight"><span class="pstep-n">6–10</span><div class="pstep-t">Query → Answer</div><div class="pstep-d">Embed → retrieve → inject → LLM answers. <em>LLM calls #4–5.</em></div></div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.55;padding-top:8px;border-top:1px solid var(--border);">Token cost: A-MEM ~1,200 tokens/question vs. LoCoMo full-context ~16,900 — <strong style="color:#fff;">93% reduction</strong>. Entire system is inference-only; no model weights updated.</div>
+  </div>
+
+  <!-- EXPERIMENTAL DESIGN -->
+  <div class="card col-8" data-section="06 — Experimental Design">
+    <div class="slabel"><span class="snr">06</span> Experimental Design — Novel Contributions</div>
+    <div class="data-table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Condition</th><th>Model</th><th>Dataset</th><th>N</th><th>Contribution</th></tr>
+      </thead>
+      <tbody>
+        <tr class="grp-row"><td colspan="5">Group A — GPT-4o-mini (model quality comparison)</td></tr>
+        <tr><td>A-MEM Full</td><td><span class="badge bg-green">GPT-4o-mini</span></td><td>locomo2</td><td>304</td><td>Replication</td></tr>
+        <tr><td><strong>No Memory ★</strong></td><td><span class="badge bg-green">GPT-4o-mini</span></td><td>locomo1</td><td>199</td><td style="color:var(--green);font-weight:600;">New: upper bound baseline</td></tr>
+        <tr class="grp-row"><td colspan="5">Group B — GPT-3.5-turbo controlled (same model + data throughout)</td></tr>
+        <tr><td><strong>No Linking</strong></td><td><span class="badge bg-gold">GPT-3.5-turbo</span></td><td>locomo1</td><td>199</td><td style="color:var(--green);font-weight:600;">New: isolated linking ablation</td></tr>
+        <tr><td><strong>No Evolution</strong></td><td><span class="badge bg-gold">GPT-3.5-turbo</span></td><td>locomo1</td><td>199</td><td style="color:var(--green);font-weight:600;">New: isolated evolution ablation</td></tr>
+        <tr><td><strong>k = 10</strong></td><td><span class="badge bg-gold">GPT-3.5-turbo</span></td><td>locomo1</td><td>199</td><td style="color:var(--green);font-weight:600;">New: retrieve-k sweep</td></tr>
+        <tr><td><strong>k = 20</strong></td><td><span class="badge bg-gold">GPT-3.5-turbo</span></td><td>locomo1</td><td>199</td><td style="color:var(--green);font-weight:600;">New: retrieve-k sweep</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="margin-top:9px;font-size:10.5px;color:var(--muted);">Linking disabled via <code style="font-family:var(--ff-mono);font-size:10px;color:var(--violet);">if False</code> gate · Evolution disabled via <code style="font-family:var(--ff-mono);font-size:10px;color:var(--violet);">if should_evolve:</code> · Metrics: Token F1, BLEU-1, ROUGE-1, METEOR</div>
+  </div>
+
+  <!-- AGGREGATE CHART -->
+  <div class="card col-7 no-lift" data-section="07 — Aggregate Results">
+    <button class="expand-btn" aria-label="Expand section">↗ expand</button>
+    <div class="slabel"><span class="snr">07</span> Aggregate Results — All Conditions</div>
+    <div style="display:flex;gap:14px;margin-bottom:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;">
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block;"></span>Token F1</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold);display:inline-block;"></span>BLEU-1</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--teal);display:inline-block;"></span>ROUGE-1</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--red);display:inline-block;"></span>METEOR</span>
+    </div>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="aggChart"></canvas>
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="card col-5 no-lift" data-section="08 — Per-Category F1 Heatmap">
+    <button class="expand-btn" aria-label="Expand section">↗ expand</button>
+    <div class="slabel"><span class="snr">08</span> Per-Category F1 Heatmap</div>
+    <div style="overflow-x:auto;">
+      <table class="heatmap">
+        <thead>
+          <tr>
+            <th>Condition</th>
+            <th>Single</th>
+            <th>Multi</th>
+            <th>Temp</th>
+            <th>Open</th>
+            <th>Yes/No</th>
+          </tr>
+        </thead>
+        <tbody id="hmBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:9px;font-size:10.5px;color:var(--muted);">Gradient: <span style="background:#b32020;color:#fff;padding:0 5px;font-size:9px;border-radius:3px;">low</span> → <span style="background:#ffdd66;color:#333;padding:0 5px;font-size:9px;border-radius:3px;">mid</span> → <span style="background:#1e7a1e;color:#fff;padding:0 5px;font-size:9px;border-radius:3px;">high</span></div>
+  </div>
+
+  <!-- CONTROLLED ABLATION CHART -->
+  <div class="card col-6 no-lift" data-section="09 — Controlled Ablation">
+    <button class="expand-btn" aria-label="Expand section">↗ expand</button>
+    <div class="slabel"><span class="snr">09</span> Controlled Ablation — GPT-3.5-turbo Group</div>
+    <div style="display:flex;gap:14px;margin-bottom:10px;font-size:11px;color:var(--muted);">
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block;"></span>Token F1</span>
+      <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold);display:inline-block;"></span>BLEU-1</span>
+    </div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="ctrlChart"></canvas>
+    </div>
+    <div style="margin-top:9px;font-size:11px;color:var(--muted);border-left:2px solid var(--green);padding-left:9px;line-height:1.6;">k=20 beats k=10 by <strong style="color:#fff;">+0.049 F1</strong> — retrieval breadth matters. Linking/Evolution removal has modest effect at GPT-3.5 scale.</div>
+  </div>
+
+  <!-- COST -->
+  <div class="card col-6 no-lift" data-section="10 — Cost & Efficiency">
+    <button class="expand-btn" aria-label="Expand section">↗ expand</button>
+    <div class="slabel"><span class="snr">10</span> Cost &amp; Efficiency Analysis</div>
+    <div class="cost-grid">
+      <div class="cost-item"><div class="cost-cond">No Memory</div><div class="cost-calls">1</div><div class="cost-sub">call/question</div><div class="cost-price cp-g">~$0.07/run</div></div>
+      <div class="cost-item"><div class="cost-cond">No Linking</div><div class="cost-calls">4</div><div class="cost-sub">calls/question</div><div class="cost-price cp-r">~$0.29/run</div></div>
+      <div class="cost-item"><div class="cost-cond">No Evolution</div><div class="cost-calls">4</div><div class="cost-sub">calls/question</div><div class="cost-price cp-r">~$0.29/run</div></div>
+      <div class="cost-item"><div class="cost-cond">Full A-MEM</div><div class="cost-calls">5</div><div class="cost-sub">calls/question</div><div class="cost-price cp-r">~$0.36/run</div></div>
+    </div>
+    <div class="chart-wrap" style="height:150px;">
+      <canvas id="costChart"></canvas>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.55;">At 20 questions/day over 30 days, A-MEM Full costs <strong style="color:#fff;">10–20× more</strong> than no memory as stored memories accumulate.</div>
+  </div>
+
+  <!-- FINDINGS -->
+  <div class="card col-6" data-section="11 — Key Findings">
+    <div class="slabel"><span class="snr">11</span> Key Findings</div>
+    <div class="findings">
+      <div class="finding f-red">
+        <div class="fnum">1</div>
+        <div class="fbody"><strong>No Memory (GPT-4o-mini) beats all memory conditions.</strong> Aggregate F1 of 0.502 vs. 0.366–0.415. On Yes/No questions, No Memory scores 0.847. Reveals a critical model-quality confound absent from the original paper.</div>
+      </div>
+      <div class="finding f-green">
+        <div class="fnum">2</div>
+        <div class="fbody"><strong>A-MEM's gains are not model-agnostic — they scale with LLM quality.</strong> GPT-3.5-turbo likely does not generate high-quality links or evolved contexts. The paper's strong results likely require GPT-4-class models doing the memory operations.</div>
+      </div>
+      <div class="finding f-gold">
+        <div class="fnum">3</div>
+        <div class="fbody"><strong>k=20 consistently outperforms k=10 (+0.049 F1).</strong> Retrieval breadth matters — more retrieved memories provide more signal for multi-hop and temporal chains.</div>
+      </div>
+      <div class="finding f-teal">
+        <div class="fnum">4</div>
+        <div class="fbody"><strong>Linking and evolution show modest isolated effects at GPT-3.5 scale.</strong> No Linking: 0.387; No Evolution: 0.388; Full k=10: 0.366. k=20 with all components (0.415) still outperforms both ablations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIMITATIONS -->
+  <div class="card col-6" data-section="12 — Limitations">
+    <div class="slabel"><span class="snr">12</span> Limitations</div>
+    <div class="lim-grid">
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>Small sample:</strong> 1–2 LoCoMo conversations (199–304 questions). High variance.</span></div>
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>Model mismatch:</strong> Group A on locomo2, Group B on locomo1 — confounded by data and model.</span></div>
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>API quota limits:</strong> Full-scale locomo10 runs not feasible — free-tier limits hit mid-run.</span></div>
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>No significance testing:</strong> Differences are point estimates without confidence intervals.</span></div>
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>Single benchmark:</strong> LoCoMo focuses on personal conversational history only.</span></div>
+      <div class="lim-item"><span class="lim-icon">!</span><span><strong>Paper ablation not replicated exactly:</strong> Original uses GPT-4o-mini full dataset; mine uses GPT-3.5 on a subset.</span></div>
+    </div>
+  </div>
+
+  <!-- FUTURE WORK -->
+  <div class="card col-8" data-section="13 — Future Work">
+    <div class="slabel"><span class="snr">13</span> Future Work</div>
+    <div class="fw-list">
+      <div class="fw-item"><span class="fw-tag tag-hi">High</span><span><strong>Run same-model controlled ablation on GPT-4o-mini at full scale.</strong> This is the critical missing experiment. All four conditions on locomo10 would definitively determine whether A-MEM's architecture adds value beyond model quality.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-hi">High</span><span><strong>Replicate with open-weight local models (Llama 3.1-8B, Mistral-7B).</strong> Local inference allows full locomo10 runs at zero marginal cost, enables proper statistical testing across 10 conversations.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-med">Med</span><span><strong>Extend retrieve-k sweep to k=5, 30, 50 with cost-accuracy tradeoff curves.</strong> k=20 &gt; k=10, but optimal k and diminishing returns are unknown.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-med">Med</span><span><strong>Evaluate on domain-specific benchmarks beyond LoCoMo</strong> — coding assistants, customer support, medical QA where memory density is higher.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-lng">Long</span><span><strong>Design a lightweight memory proxy to replace LLM-based link and evolution calls.</strong> Memory ops account for 80% of API spend but deliver marginal F1 gains at GPT-3.5 scale.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-lng">Long</span><span><strong>Study memory decay and forgetting strategies.</strong> A-MEM stores all memories indefinitely. Evaluating forgetting schedules is essential for real-world deployment viability.</span></div>
+      <div class="fw-item"><span class="fw-tag tag-inf">Infra</span><span><strong>Instrument memory-level metrics alongside QA metrics.</strong> Adding link precision, evolution coherence, and retrieval recall@k would let future work diagnose whether poor QA stems from bad memory construction or bad retrieval.</span></div>
+    </div>
+  </div>
+
+  <!-- CONCLUSIONS -->
+  <div class="card col-4" data-section="14 — Conclusions">
+    <div class="slabel"><span class="snr">14</span> Conclusions</div>
+    <ul class="conc-list">
+      <li><span class="star">★</span><span><strong>A-MEM's architecture is sound but not model-agnostic.</strong> Its reported gains are partly a function of LLM quality doing the linking and evolving.</span></li>
+      <li><span class="star">★</span><span><strong>The no-memory upper bound is a critical missing baseline.</strong> All future memory evaluations should include a same-model no-memory condition.</span></li>
+      <li><span class="star">★</span><span><strong>Retrieval breadth (k) is the most actionable lever.</strong> k=20 consistently beats k=10 — tune k first before adding architectural complexity.</span></li>
+      <li><span class="star">★</span><span><strong>Cost scales superlinearly with usage.</strong> At 5 LLM calls per question with a growing memory store, A-MEM is expensive for high-volume deployments.</span></li>
+      <li><span class="star">★</span><span><strong>Replication revealed important omissions:</strong> no no-memory baseline, no isolated single-component ablations, no model-tier sensitivity analysis.</span></li>
+    </ul>
+  </div>
+
+</div><!-- /grid -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <strong>References</strong><br>
+    <a href="https://arxiv.org/abs/2502.12110" target="_blank">Xu et al. (2024). A-MEM: Agentic Memory for LLM Agents. arXiv:2502.12110</a><br>
+    <a href="https://github.com/snap-research/locomo" target="_blank">Maharana et al. (2024). LoCoMo benchmark / GitHub repository</a>
+  </div>
+  <div style="text-align:right;">
+    Code &amp; Results: <a href="https://colab.research.google.com/drive/1owCJBgt1MIjte5zl38SA3yOh2Iv_y20D" target="_blank">colab.research.google.com/…/1owCJBgt1MIjte5zl38SA3yOh2Iv_y20D</a><br>
+    IST 700 Final Project · Roy · Syracuse University · April 21, 2026
+  </div>
+</footer>
+
+</div><!-- /page-wrap -->
+
+<!-- OVERLAY + MODAL -->
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Expanded section">
+  <div class="modal-header">
+    <span class="modal-tag" id="modalTag">Section</span>
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+  </div>
+  <div id="modalBody"></div>
+</div>
+
+<script>
+/* ─── CHART.JS DEFAULTS ─────────────────────────────────────── */
+const CT = '#b0c8b4';
+const GL = 'rgba(255,255,255,0.07)';
+Chart.defaults.color = CT;
+Chart.defaults.font.family = "'DM Mono', monospace";
+
+/* ─── AGG CHART ──────────────────────────────────────────────── */
+new Chart(document.getElementById('aggChart'), {
+  type: 'bar',
+  data: {
+    labels: ['A-MEM\nFull (4o)', 'No Memory\n(4o)', 'No Linking\n(3.5t)', 'No Evol.\n(3.5t)', 'k=10\n(3.5t)', 'k=20\n(3.5t)'],
+    datasets: [
+      { label: 'Token F1', data: [0.367,0.502,0.387,0.388,0.366,0.415], backgroundColor: 'rgba(110,232,122,.75)', hoverBackgroundColor: '#6ee87a', borderRadius: 5 },
+      { label: 'BLEU-1',   data: [0.321,0.424,0.337,0.333,0.320,0.362], backgroundColor: 'rgba(240,192,96,.75)', hoverBackgroundColor: '#f0c060', borderRadius: 5 },
+      { label: 'ROUGE-1',  data: [0.380,0.519,0.400,0.400,0.380,0.426], backgroundColor: 'rgba(90,220,232,.75)', hoverBackgroundColor: '#5adce8', borderRadius: 5 },
+      { label: 'METEOR',   data: [0.296,0.381,0.281,0.281,0.269,0.305], backgroundColor: 'rgba(240,112,112,.75)', hoverBackgroundColor: '#f07070', borderRadius: 5 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: CT, font: { size: 10 }, usePointStyle: true, padding: 14 } },
+      tooltip: {
+        backgroundColor: 'rgba(8,22,13,.95)',
+        borderColor: 'rgba(255,255,255,.15)',
+        borderWidth: 1,
+        padding: 10,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(3)}` }
+      }
+    },
+    scales: {
+      y: { beginAtZero: false, min: 0.24, max: 0.56, ticks: { callback: v => v.toFixed(2), font: { size: 10 } }, grid: { color: GL } },
+      x: { ticks: { font: { size: 9.5 } }, grid: { display: false } }
+    }
+  }
+});
+
+/* ─── CONTROLLED ABLATION CHART ─────────────────────────────── */
+new Chart(document.getElementById('ctrlChart'), {
+  type: 'bar',
+  data: {
+    labels: ['No Linking', 'No Evolution', 'k=10 (base)', 'k=20'],
+    datasets: [
+      { label: 'Token F1', data: [0.387,0.388,0.366,0.415], backgroundColor: ['rgba(110,232,122,.6)','rgba(110,232,122,.6)','rgba(110,232,122,.6)','rgba(110,232,122,1)'], hoverBackgroundColor: '#6ee87a', borderRadius: 5 },
+      { label: 'BLEU-1',   data: [0.337,0.333,0.320,0.362], backgroundColor: ['rgba(240,192,96,.6)','rgba(240,192,96,.6)','rgba(240,192,96,.6)','rgba(240,192,96,1)'], hoverBackgroundColor: '#f0c060', borderRadius: 5 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(8,22,13,.95)',
+        borderColor: 'rgba(255,255,255,.15)', borderWidth: 1, padding: 10,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(3)}` }
+      }
+    },
+    scales: {
+      y: { beginAtZero: false, min: 0.28, max: 0.46, ticks: { callback: v => v.toFixed(2), font: { size: 10 } }, grid: { color: GL } },
+      x: { ticks: { font: { size: 10.5 } }, grid: { display: false } }
+    }
+  }
+});
+
+/* ─── COST CHART ─────────────────────────────────────────────── */
+const days = Array.from({ length: 30 }, (_, i) => i + 1);
+const noMemCost = days.map(() => 20 * (350 * 0.15 / 1e6 + 150 * 0.60 / 1e6));
+const amemCost = days.map(d => {
+  const mems = d * 20;
+  const ret = Math.min(mems, 20) * 80;
+  const perQ = [300 + 50 + 200, 300 + ret + 300, 300 + ret + 400, 300 + 50 + 100, 300 + 50 + ret]
+    .reduce((s, t) => s + t * 0.15 / 1e6 + 150 * 0.60 / 1e6, 0);
+  return 20 * perQ;
+});
+new Chart(document.getElementById('costChart'), {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      { label: 'No Memory', data: noMemCost, borderColor: '#6ee87a', borderWidth: 2, pointRadius: 0, borderDash: [5,4], fill: false, tension: 0 },
+      { label: 'A-MEM Full', data: amemCost, borderColor: '#f07070', borderWidth: 2, pointRadius: 0, backgroundColor: 'rgba(240,112,112,.08)', fill: '-1', tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { color: CT, font: { size: 10 }, usePointStyle: true, padding: 12 } },
+      tooltip: {
+        backgroundColor: 'rgba(8,22,13,.95)',
+        borderColor: 'rgba(255,255,255,.15)', borderWidth: 1, padding: 10,
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.raw.toFixed(4)}`, title: lbl => `Day ${lbl[0].label}` }
+      }
+    },
+    scales: {
+      y: { ticks: { callback: v => '$' + v.toFixed(3), font: { size: 9.5 }, maxTicksLimit: 5 }, grid: { color: GL } },
+      x: { ticks: { callback: (_, i) => (i + 1) % 5 === 0 ? `Day ${i + 1}` : '', font: { size: 9 } }, grid: { display: false } }
+    }
+  }
+});
+
+/* ─── HEATMAP ─────────────────────────────────────────────────── */
+const HM_DATA = [
+  { cond: 'Full A-MEM (4o)',   vals: [0.192, 0.443, 0.141, 0.319, 0.524] },
+  { cond: 'No Memory (4o)',    vals: [0.246, 0.508, 0.135, 0.452, 0.847] },
+  { cond: 'No Linking (3.5t)', vals: [0.238, 0.173, 0.107, 0.407, 0.705] },
+  { cond: 'No Evol. (3.5t)',   vals: [0.232, 0.155, 0.077, 0.418, 0.717] },
+  { cond: 'k=10 (3.5t)',       vals: [0.225, 0.136, 0.093, 0.408, 0.657] },
+  { cond: 'k=20 (3.5t)',       vals: [0.284, 0.141, 0.100, 0.456, 0.748] },
+];
+
+function hmColor(v) {
+  const t = Math.max(0, Math.min(1, (v - 0.07) / (0.85 - 0.07)));
+  if (t < 0.5) {
+    const u = t * 2;
+    return `rgb(${Math.round(179 + u * 76)},${Math.round(32 + u * 223)},${Math.round(32 + u * 180)})`;
+  } else {
+    const u = (t - 0.5) * 2;
+    return `rgb(${Math.round(255 - u * 210)},${Math.round(255 - u * 145)},${Math.round(212 - u * 167)})`;
+  }
+}
+function hmText(v) { return (v >= 0.5 || v <= 0.15) ? '#fff' : '#1a2a1a'; }
+
+const hmBody = document.getElementById('hmBody');
+HM_DATA.forEach(row => {
+  const tr = document.createElement('tr');
+  const td0 = document.createElement('td'); td0.textContent = row.cond; tr.appendChild(td0);
+  row.vals.forEach(v => {
+    const td = document.createElement('td');
+    td.textContent = v.toFixed(3);
+    td.style.background = hmColor(v);
+    td.style.color = hmText(v);
+    tr.appendChild(td);
+  });
+  hmBody.appendChild(tr);
+});
+
+/* ─── MODAL ───────────────────────────────────────────────────── */
+const overlay    = document.getElementById('overlay');
+const modal      = document.getElementById('modal');
+const modalTag   = document.getElementById('modalTag');
+const modalBody  = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+// Track any chart instances rendered inside the modal so we can destroy them on close
+let modalChartInstances = [];
+
+function destroyModalCharts() {
+  modalChartInstances.forEach(c => c.destroy());
+  modalChartInstances = [];
+}
+
+// Chart configs keyed by canvas id — re-used to render fresh instances in the modal
+const CHART_CONFIGS = {
+  aggChart: () => ({
+    type: 'bar',
+    data: {
+      labels: ['A-MEM Full (4o)', 'No Memory (4o)', 'No Linking (3.5t)', 'No Evol. (3.5t)', 'k=10 (3.5t)', 'k=20 (3.5t)'],
+      datasets: [
+        { label: 'Token F1', data: [0.367,0.502,0.387,0.388,0.366,0.415], backgroundColor: 'rgba(110,232,122,.75)', hoverBackgroundColor: '#6ee87a', borderRadius: 5 },
+        { label: 'BLEU-1',   data: [0.321,0.424,0.337,0.333,0.320,0.362], backgroundColor: 'rgba(240,192,96,.75)',  hoverBackgroundColor: '#f0c060', borderRadius: 5 },
+        { label: 'ROUGE-1',  data: [0.380,0.519,0.400,0.400,0.380,0.426], backgroundColor: 'rgba(90,220,232,.75)',  hoverBackgroundColor: '#5adce8', borderRadius: 5 },
+        { label: 'METEOR',   data: [0.296,0.381,0.281,0.281,0.269,0.305], backgroundColor: 'rgba(240,112,112,.75)', hoverBackgroundColor: '#f07070', borderRadius: 5 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { color: CT, font: { size: 11 }, usePointStyle: true, padding: 14 } },
+        tooltip: { backgroundColor: 'rgba(8,22,13,.95)', borderColor: 'rgba(255,255,255,.15)', borderWidth: 1, padding: 10, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(3)}` } }
+      },
+      scales: {
+        y: { beginAtZero: false, min: 0.24, max: 0.56, ticks: { callback: v => v.toFixed(2), font: { size: 11 } }, grid: { color: GL } },
+        x: { ticks: { font: { size: 10.5 } }, grid: { display: false } }
+      }
+    }
+  }),
+  ctrlChart: () => ({
+    type: 'bar',
+    data: {
+      labels: ['No Linking', 'No Evolution', 'k=10 (base)', 'k=20'],
+      datasets: [
+        { label: 'Token F1', data: [0.387,0.388,0.366,0.415], backgroundColor: ['rgba(110,232,122,.6)','rgba(110,232,122,.6)','rgba(110,232,122,.6)','rgba(110,232,122,1)'], hoverBackgroundColor: '#6ee87a', borderRadius: 5 },
+        { label: 'BLEU-1',   data: [0.337,0.333,0.320,0.362], backgroundColor: ['rgba(240,192,96,.6)','rgba(240,192,96,.6)','rgba(240,192,96,.6)','rgba(240,192,96,1)'],   hoverBackgroundColor: '#f0c060', borderRadius: 5 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'bottom', labels: { color: CT, font: { size: 11 }, usePointStyle: true, padding: 12 } },
+        tooltip: { backgroundColor: 'rgba(8,22,13,.95)', borderColor: 'rgba(255,255,255,.15)', borderWidth: 1, padding: 10, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(3)}` } }
+      },
+      scales: {
+        y: { beginAtZero: false, min: 0.28, max: 0.46, ticks: { callback: v => v.toFixed(2), font: { size: 11 } }, grid: { color: GL } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  }),
+  costChart: () => {
+    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const noMemCost = days.map(() => 20 * (350 * 0.15 / 1e6 + 150 * 0.60 / 1e6));
+    const amemCost = days.map(d => {
+      const mems = d * 20; const ret = Math.min(mems, 20) * 80;
+      const perQ = [300+50+200, 300+ret+300, 300+ret+400, 300+50+100, 300+50+ret].reduce((s,t) => s + t*0.15/1e6 + 150*0.60/1e6, 0);
+      return 20 * perQ;
+    });
+    return {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          { label: 'No Memory', data: noMemCost, borderColor: '#6ee87a', borderWidth: 2, pointRadius: 0, borderDash: [5,4], fill: false, tension: 0 },
+          { label: 'A-MEM Full', data: amemCost, borderColor: '#f07070', borderWidth: 2, pointRadius: 0, backgroundColor: 'rgba(240,112,112,.08)', fill: '-1', tension: 0.3 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { color: CT, font: { size: 11 }, usePointStyle: true, padding: 12 } },
+          tooltip: { backgroundColor: 'rgba(8,22,13,.95)', borderColor: 'rgba(255,255,255,.15)', borderWidth: 1, padding: 10, callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.raw.toFixed(4)}`, title: lbl => `Day ${lbl[0].label}` } }
+        },
+        scales: {
+          y: { ticks: { callback: v => '$' + v.toFixed(3), font: { size: 10 }, maxTicksLimit: 5 }, grid: { color: GL } },
+          x: { ticks: { callback: (_, i) => (i+1) % 5 === 0 ? `Day ${i+1}` : '', font: { size: 9.5 } }, grid: { display: false } }
+        }
+      }
+    };
+  }
+};
+
+function openModal(card) {
+  const section = card.dataset.section || 'Section';
+  modalTag.textContent = section;
+
+  destroyModalCharts();
+
+  // Clone the card's inner HTML (not the outer card element itself)
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = card.innerHTML;
+
+  // Remove the expand button from the clone
+  const btn = wrapper.querySelector('.expand-btn');
+  if (btn) btn.remove();
+
+  // Give each canvas a new unique id so Chart.js doesn't conflict
+  wrapper.querySelectorAll('canvas').forEach(canvas => {
+    const origId = canvas.id;
+    const newId = origId + '_modal';
+    canvas.id = newId;
+    // store the original id so we can look up the config
+    canvas.dataset.origId = origId;
+  });
+
+  modalBody.innerHTML = '';
+  modalBody.appendChild(wrapper);
+
+  // Re-render charts in modal with fresh instances and taller height
+  wrapper.querySelectorAll('canvas').forEach(canvas => {
+    const origId = canvas.dataset.origId;
+    const cfgFn = CHART_CONFIGS[origId];
+    if (cfgFn) {
+      // Make chart taller in modal
+      canvas.closest('.chart-wrap').style.height = '300px';
+      const instance = new Chart(canvas, cfgFn());
+      modalChartInstances.push(instance);
+    }
+  });
+
+  // Re-render heatmap if present
+  const hmBodyModal = wrapper.querySelector('#hmBody');
+  if (hmBodyModal) {
+    hmBodyModal.id = 'hmBody_modal';
+    hmBodyModal.innerHTML = '';
+    HM_DATA.forEach(row => {
+      const tr = document.createElement('tr');
+      const td0 = document.createElement('td'); td0.textContent = row.cond; tr.appendChild(td0);
+      row.vals.forEach(v => {
+        const td = document.createElement('td');
+        td.textContent = v.toFixed(3);
+        td.style.background = hmColor(v);
+        td.style.color = hmText(v);
+        tr.appendChild(td);
+      });
+      hmBodyModal.appendChild(tr);
+    });
+  }
+
+  overlay.classList.add('open');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modalClose.focus();
+}
+
+function closeModal() {
+  destroyModalCharts();
+  overlay.classList.remove('open');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Clickable cards (non no-lift) — whole card is the trigger
+document.querySelectorAll('.card:not(.no-lift)').forEach(card => {
+  card.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    openModal(card);
+  });
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); } });
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Expand section: ${card.dataset.section || 'card'}`);
+});
+
+// no-lift cards — only the expand button triggers the modal
+document.querySelectorAll('.card.no-lift .expand-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    openModal(btn.closest('.card'));
+  });
+  btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(btn.closest('.card')); } });
+});
+
+modalClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
